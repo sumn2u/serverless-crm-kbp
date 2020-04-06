@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "invoke-local": "sls invoke local --function",
+    "jest": "jest",
+    "test-local": "yarn invoke-local && jest",
+    "offline": "sls offline",
+    "deploy-function": "sls deploy function --function",
+    "invoke-remote": "sls invoke --function",
+    "test-remote": "sls test",
+    "deploy-test": "sls deploy && sls test"
+  },
+  "dependencies": {
+    "facebook-chat-api": "^1.7.0",
+    "lodash": "^4.17.15",
+    "node-fetch": "^2.6.0",
+    "source-map-support": "^0.5.16"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "serverless-jest-plugin": "^0.3.0",
+    "serverless-offline": "^6.1.2",
+    "serverless-plugin-typescript": "^1.1.9",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.7.5"
+  }
+}
