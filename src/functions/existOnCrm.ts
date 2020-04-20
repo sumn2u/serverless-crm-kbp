@@ -1,13 +1,14 @@
 import * as _ from "lodash";
 import * as customers from "../apis/priority/customer";
-import * as accounts from "../apis/priority/accounts";
 import * as invoices from "../apis/priority/invoices";
 import "source-map-support/register";
 import {
   internalErrorResponse,
   noSuchCustomerResponse,
 } from "../common/responses";
-import { adaptPhoneNum } from "../utils/phoneNumber";
+import { adaptPhoneNum } from "./utils/phoneNumber";
+import { getAccountBalance } from "./utils/accountBalance";
+import { getTop10 } from "./utils/top10";
 
 const validResponse = (params) => ({
   statusCode: 200,
@@ -20,29 +21,26 @@ const validResponse = (params) => ({
   ),
 });
 
-async function getAccountBalance(id) {
-  return accounts.findById(id).then((accountsList) => {
-    const currAccount = _.first(accountsList);
-    return currAccount ? currAccount.BALANCE1 : null;
-  });
-}
+async function getPurchaseData(id) {
+  const invoicesList = await invoices.findByCutomerId(id);
+  console.log("*** invoicesList", invoicesList);
 
-async function getLastPurchaseData(id) {
-  return invoices.findById(id).then((invoicesList) => {
-    const latestInvoice = _.first(invoicesList);
-    if (!latestInvoice)
-      return { lastPurchaseAmount: null, lastPurchaseDate: null };
-    return {
-      lastPurchaseAmount: latestInvoice.TOTPRICE,
-      lastPurchaseDate: latestInvoice.IVDATE,
-    };
-  });
+  const top10 = await getTop10(invoicesList).catch(e => ([]));
+
+  const latestInvoice = _.first(invoicesList);
+  if (!latestInvoice)
+    return { lastPurchaseAmount: null, lastPurchaseDate: null };
+  return {
+    lastPurchaseAmount: latestInvoice.TOTPRICE,
+    lastPurchaseDate: latestInvoice.IVDATE,
+    top10,
+  };
 }
 
 async function getMoreData(id: String) {
   const [accountBalance, latestInvoiceData] = await Promise.all([
     getAccountBalance(id),
-    getLastPurchaseData(id),
+    getPurchaseData(id),
   ]);
 
   const data = {

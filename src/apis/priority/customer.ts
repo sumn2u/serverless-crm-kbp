@@ -6,7 +6,7 @@ import getSettings from "../../config/get-settings";
 const { priorityApiBase, Authorization } = getSettings("dev");
 
 const phonePath = "CUSTOMERS?$filter=PHONE eq '<%= phone %>'";
-const phoneNationalIdPath = "CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>'";
+const phoneNationalIdPath = "CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>' &$select=CUSTDES,PHONE,ADDRESS2,ADDRESS,STATE,VATNUM,CREATEDDATE,AGENTNAME,SPEC6,CUSTNAME";
 
 export function findByPhone(phone, nationalId = null) {
   const path = nationalId ? phoneNationalIdPath : phonePath;

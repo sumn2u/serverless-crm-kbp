@@ -5,7 +5,7 @@ import getSettings from "../../config/get-settings";
 
 const { priorityApiBase, Authorization } = getSettings("dev");
 
-const path = "ACCOUNTS_RECEIVABLE?$filter=ACCNAME eq '<%= id %>'";
+const path = "ACCOUNTS_RECEIVABLE?$filter=ACCNAME eq '<%= id %>'&$select=BALANCE1";
 
 export function findById(id) {
   const url = template(`${priorityApiBase}/${path}`)({ id });
