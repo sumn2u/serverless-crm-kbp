@@ -31,7 +31,7 @@ async function getPurchaseData(id) {
   if (!latestInvoice)
     return { lastPurchaseAmount: null, lastPurchaseDate: null };
   return {
-    lastPurchaseAmount: latestInvoice.TOTPRICE,
+    lastPurchaseAmount: Math.abs(latestInvoice.TOTPRICE),
     lastPurchaseDate: latestInvoice.IVDATE,
     top10,
   };
