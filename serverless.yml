@@ -61,6 +61,14 @@ functions:
           method: post
           private: true
 
+  createOrder:
+    handler: src/functions/orders.create
+    events:
+      - http:
+          path: crm/orders/create
+          method: post
+          private: true
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
