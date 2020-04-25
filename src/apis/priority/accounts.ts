@@ -7,7 +7,7 @@ const { priorityApiBase, Authorization } = getSettings("dev");
 
 const path = "ACCOUNTS_RECEIVABLE?$filter=ACCNAME eq '<%= id %>'&$select=BALANCE1";
 
-export function findById(id) {
+export function findById(id: string): Promise<{}> {
   const url = template(`${priorityApiBase}/${path}`)({ id });
 
   console.log(url, "***");

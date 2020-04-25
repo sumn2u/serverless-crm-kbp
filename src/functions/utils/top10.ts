@@ -3,39 +3,42 @@ import * as _ from "lodash";
 import * as invoicesApi from "../../apis/priority/invoices";
 
 export async function reduceItemsFromInvoices(invoicesList) {
-  const purchases = {};
+  const itemsCounter = {
+    // "213123": { ... invoice, sum}
+  };
+
   await Promise.all(
     invoicesList.map((invoice) =>
       invoicesApi.findExtendedByInvoiceId(invoice).then((items) => {
-        console.log("*** items", items);
-        _.map(items, (item) => {
-          if (purchases[item.barcode]) {
+        _.map(items, (currItem) => {
+          if (itemsCounter[currItem.barcode]) {
             // add to count
-            purchases[item.barcode] = purchases[item.barcode] + item.amount;
+            itemsCounter[currItem.barcode].sum += currItem.amount;
           } else {
             // new count
-            purchases[item.barcode] = item.amount;
+            itemsCounter[currItem.barcode] = {
+              ..._.omit(currItem, ['amount']),
+              sum: currItem.amount,
+            };
           }
         });
       })
     )
   );
 
-  console.log("*** purchases", purchases);
-  return purchases;
+  return itemsCounter;
 }
 
 export function sliceTop(purchases: {}) {
-  const purchasesArray = Object.entries(purchases).map(([barcode, amount]) => ({
-    barcode,
-    amount,
-  }));
+  const purchasesArray = Object.entries(
+    purchases
+  ).map(([barcode, invoice]: [string, object]): object => ({ ...invoice }));
 
-  console.log("*** purchasesArray", purchasesArray);
-  const sorted = _.orderBy(purchasesArray, ["amount"], ["desc"]);
-  console.log("*** sorted", sorted);
+  // console.log("*** purchasesArray", purchasesArray);
+  const sorted = _.orderBy(purchasesArray, ["sum"], ["desc"]);
+  // console.log("*** sorted", sorted);
 
- return  _.slice(sorted, 0, _.min([10, sorted.length]));
+  return _.slice(sorted, 0, _.min([10, sorted.length]));
 }
 
 export async function getTop10(invoicesList) {

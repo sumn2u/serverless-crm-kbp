@@ -1,9 +1,9 @@
-interface env {
+export interface iSettings {
   priorityApiBase: String;
   Authorization: String;
 }
 
-const ENV: { dev: env; staging: env; prod: env } = {
+const ENV: { dev: iSettings; staging: iSettings; prod: iSettings } = {
   dev: {
     priorityApiBase:
       "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",

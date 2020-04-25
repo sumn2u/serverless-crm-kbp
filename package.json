@@ -7,7 +7,8 @@
     "deploy-function": "sls deploy function --function",
     "invoke-remote": "sls invoke --function",
     "test-remote": "sls test",
-    "deploy-test": "sls deploy && sls test"
+    "deploy-test": "sls deploy && sls test",
+    "tsc": "tsc --build tsconfig.json"
   },
   "dependencies": {
     "facebook-chat-api": "^1.7.0",

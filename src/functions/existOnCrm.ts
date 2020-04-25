@@ -23,7 +23,7 @@ const validResponse = (params) => ({
 
 async function getPurchaseData(id) {
   const invoicesList = await invoices.findByCutomerId(id);
-  console.log("*** invoicesList", invoicesList);
+  // console.log("*** invoicesList", invoicesList);
 
   const top10 = await getTop10(invoicesList).catch(e => ([]));
 
@@ -48,7 +48,7 @@ async function getMoreData(id: String) {
     ...latestInvoiceData,
   };
 
-  console.log("*** data", data);
+  // console.log("*** data", data);
 
   return data;
 }
@@ -71,7 +71,7 @@ export async function validatePhoneNumberExists(data) {
   const persona = result[0];
   const id = persona.CUSTNAME;
   const extraData = await getMoreData(id);
-  console.log("*** extraData", extraData);
+  // console.log("*** extraData", extraData);
 
   return validResponse({
     name: persona.CUSTDES,

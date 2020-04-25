@@ -19,9 +19,21 @@ export function findByCutomerId(id) {
     .then((response) => response.value);
 }
 
-export function findExtendedByInvoiceId(invoice) {
+export interface InvoiceItem {
+  barcode: string;
+  amount: string;
+  label: string;
+  price: number;
+  productId: string;
+}
+
+export interface InvoiceItems {
+  [index:number]: InvoiceItem
+}
+
+export async function findExtendedByInvoiceId(invoice: object) : Promise<InvoiceItems> {
   const path =
-    "AINVOICES(IVNUM='<%= IVNUM %>',DEBIT='<%= DEBIT %>',IVTYPE='<%= IVTYPE %>')/AINVOICEITEMS_SUBFORM?$select=BARCODE,QUANT";
+    "AINVOICES(IVNUM='<%= IVNUM %>',DEBIT='<%= DEBIT %>',IVTYPE='<%= IVTYPE %>')/AINVOICEITEMS_SUBFORM?$select=BARCODE,QUANT,PDES,PARTNAME,PRICE";
   const url = template(`${priorityApiBase}/${path}`)({ ...invoice });
 
   console.log(url, "***");
@@ -33,10 +45,13 @@ export function findExtendedByInvoiceId(invoice) {
     .then((response) => response.json())
     .then((response) => response.value)
     .then((invoices) =>
-      map(invoices, ({ BARCODE, QUANT }) => {
+      map(invoices, ({ BARCODE,QUANT,PDES,PARTNAME,PRICE }) => {
         return ({
           barcode: BARCODE,
           amount: Math.abs(QUANT), // QUANT shows as negative number
+          label: PDES,
+          price: PRICE,
+          productId: PARTNAME,
         });
       })
     );
