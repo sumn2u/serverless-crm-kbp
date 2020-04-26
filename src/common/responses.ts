@@ -21,3 +21,7 @@ export const internalErrorResponse = arg => ({
     2
   )
 });
+export const validResponse = (body) => ({
+  statusCode: 200,
+  body: JSON.stringify(body, null, 2),
+});

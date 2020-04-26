@@ -2,24 +2,10 @@ import * as _ from "lodash";
 import * as customers from "../apis/priority/customer";
 import * as invoices from "../apis/priority/invoices";
 import "source-map-support/register";
-import {
-  internalErrorResponse,
-  noSuchCustomerResponse,
-} from "../common/responses";
-import { adaptPhoneNum } from "./utils/phoneNumber";
-import { getAccountBalance } from "./utils/accountBalance";
-import { getTop10 } from "./utils/top10";
-
-const validResponse = (params) => ({
-  statusCode: 200,
-  body: JSON.stringify(
-    {
-      ...params,
-    },
-    null,
-    2
-  ),
-});
+import {internalErrorResponse, noSuchCustomerResponse, validResponse,} from "../common/responses";
+import {adaptPhoneNum} from "./utils/phoneNumber";
+import {getAccountBalance} from "./utils/accountBalance";
+import {getTop10} from "./utils/top10";
 
 async function getPurchaseData(id) {
   const invoicesList = await invoices.findByCutomerId(id);
@@ -29,7 +15,7 @@ async function getPurchaseData(id) {
 
   const latestInvoice = _.first(invoicesList);
   if (!latestInvoice)
-    return { lastPurchaseAmount: null, lastPurchaseDate: null };
+    return {lastPurchaseAmount: null, lastPurchaseDate: null};
   return {
     lastPurchaseAmount: Math.abs(latestInvoice.TOTPRICE),
     lastPurchaseDate: latestInvoice.IVDATE,
