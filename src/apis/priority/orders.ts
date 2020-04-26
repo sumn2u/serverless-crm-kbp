@@ -1,11 +1,6 @@
-import { template } from "lodash";
-import fetch from "node-fetch";
+import baseApi from './basePriorityApi';
 
-import getSettings from "../../config/get-settings";
-
-const { priorityApiBase, Authorization } = getSettings("dev");
-
-const path = "ORDERS";
+const path = "/ORDERS";
 
 export interface IOrder {
   customerId: string;
@@ -17,27 +12,23 @@ export function buildOrder(order: IOrder) {
     CUSTNAME: order.customerId,
     ORDERITEMS_SUBFORM: order.items.map((item) => ({
       PARTNAME: item.productId,
-      DUEDATE: "2020-01-01T00:00:00",
+      DUEDATE: "2020-08-01T00:00:00+03:00",
       QUANT: item.amount,
     })),
   };
 }
 
-export function create(order: IOrder): Promise<[IOrder]> {
-  const url = `${priorityApiBase}/${path}`;
-  console.log('*** url', url);
-  const body = buildOrder(order);
+export async function create(order: IOrder): Promise<any> {
+  const data = buildOrder(order);
+  // console.log('*** data', data);
 
-  console.log('*** body', body);
-
-  return fetch(url, {
-    method: "post",
-    body: JSON.stringify(body),
-    headers: {
-      Authorization,
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((json) => console.log("*** json", json));
+  return baseApi.post(path, data)
+    .then(response => {
+      // console.log('*** response', response);
+      // console.log('*** response.data', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.log(error, 'error on create order');
+    })
 }

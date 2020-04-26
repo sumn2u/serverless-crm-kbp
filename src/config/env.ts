@@ -1,6 +1,6 @@
 export interface iSettings {
-  priorityApiBase: String;
-  Authorization: String;
+  priorityApiBase: string;
+  Authorization: string;
 }
 
 const ENV: { dev: iSettings; staging: iSettings; prod: iSettings } = {

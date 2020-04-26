@@ -1,6 +1,6 @@
 // import fetch from "node-fetch";
 
-import {buildOrder, IOrder} from "../orders";
+import {buildOrder, create, IOrder} from "../orders";
 
 const result = {
   "CUSTNAME": "100001",
@@ -32,7 +32,14 @@ const input : IOrder = {
   ]
 }
 
-test("create order", async () => {
+test("build order", async () => {
   expect(buildOrder(input)).toEqual(result);
 });
+
+test("create order", async () => {
+  const order = await create(input);
+  console.log('*** order', order);
+  expect(order.CUSTNAME).toEqual(input.customerId);
+});
+
 
