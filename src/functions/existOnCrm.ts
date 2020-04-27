@@ -61,6 +61,7 @@ export async function validatePhoneNumberExists(data) {
 
   return validResponse({
     name: persona.CUSTDES,
+    crmId: persona.CUSTNAME,
     phoneNumber: persona.PHONE,
     address: persona.ADDRESS2
       ? `${persona.ADDRESS} ${persona.ADDRESS2}, ${persona.STATE}`

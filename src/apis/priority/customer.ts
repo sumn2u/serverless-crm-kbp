@@ -1,4 +1,4 @@
-import { template } from "lodash";
+import { filter, template } from "lodash";
 import fetch1 from "node-fetch";
 
 import getSettings from "../../config/get-settings";
@@ -19,5 +19,6 @@ export function findByPhone(phone, nationalId = null) {
     headers: { Authorization }
   })
     .then(response => response.json())
-    .then(response => response.value);
+    .then(response => response.value)
+    .then(possibleCustomers => filter(possibleCustomers, cus => cus.STATDES == "פעיל"))
 }
