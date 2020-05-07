@@ -12,7 +12,7 @@ export function buildOrder(order: IOrder) {
     CUSTNAME: order.customerId,
     ORDERITEMS_SUBFORM: order.items.map((item) => ({
       PARTNAME: item.productId,
-      DUEDATE: "2020-08-01T00:00:00+03:00",
+      DUEDATE: new Date().toISOString(),
       QUANT: item.amount,
     })),
   };

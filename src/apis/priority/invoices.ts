@@ -1,58 +1,54 @@
 import { template, map } from "lodash";
-import fetch1 from "node-fetch";
 
-import getSettings from "../../config/get-settings";
+import baseApi from "./basePriorityApi";
 
-const { priorityApiBase, Authorization } = getSettings("dev");
+export const invoiceListFields = 'TOTPRICE,IVDATE,IVNUM,DEBIT,IVTYPE';
 
-export function findByCutomerId(id) {
-  const path = "AINVOICES?$filter=CUSTNAME eq '<%= id %>'&$select=TOTPRICE,IVDATE,IVNUM,DEBIT,IVTYPE";
-  const url = template(`${priorityApiBase}/${path}`)({ id });
-
-  console.log(url, "***");
-
-  return fetch1(url, {
-    method: "get",
-    headers: { Authorization },
-  })
-    .then((response) => response.json())
-    .then((response) => response.value);
+export interface Invoice {
+  TOTPRICE: number;
+  IVDATE: string;
+  IVNUM: string;
+  DEBIT: string;
+  IVTYPE: string;
 }
 
-export interface InvoiceItem {
+export function findByCutomerId(id: string) : Promise<[Invoice]> {
+  const path =
+    `/AINVOICES?$filter=CUSTNAME eq '<%= id %>'&$select=${invoiceListFields}`;
+  const url = template(path)({ id });
+  console.log("*** url", url);
+  return baseApi.get(url)
+    .then((response) => response.data.value);
+}
+
+export interface ItemPurchased {
   barcode: string;
   amount: string;
   label: string;
   price: number;
   productId: string;
-}
+};
 
-export interface InvoiceItems {
-  [index:number]: InvoiceItem
-}
-
-export async function findExtendedByInvoiceId(invoice: object) : Promise<InvoiceItems> {
+export async function findExtendedByInvoiceId(
+  invoice: object
+): Promise<[ItemPurchased]> {
+  console.log('*** invoice', invoice);
   const path =
-    "AINVOICES(IVNUM='<%= IVNUM %>',DEBIT='<%= DEBIT %>',IVTYPE='<%= IVTYPE %>')/AINVOICEITEMS_SUBFORM?$select=BARCODE,QUANT,PDES,PARTNAME,PRICE";
-  const url = template(`${priorityApiBase}/${path}`)({ ...invoice });
+    "/AINVOICES(IVNUM='<%= IVNUM %>',DEBIT='<%= DEBIT %>',IVTYPE='<%= IVTYPE %>')/AINVOICEITEMS_SUBFORM?$select=BARCODE,QUANT,PDES,PARTNAME,PRICE";
+  const url = template(path)({ ...invoice });
 
-  console.log(url, "***");
-
-  return fetch1(url, {
-    method: "get",
-    headers: { Authorization },
-  })
-    .then((response) => response.json())
-    .then((response) => response.value)
+  return baseApi
+    .get(url)
+    .then((response) => response.data.value)
     .then((invoices) =>
-      map(invoices, ({ BARCODE,QUANT,PDES,PARTNAME,PRICE }) => {
-        return ({
+      map(invoices, ({ BARCODE, QUANT, PDES, PARTNAME, PRICE }) => {
+        return {
           barcode: BARCODE,
           amount: Math.abs(QUANT), // QUANT shows as negative number
           label: PDES,
           price: PRICE,
           productId: PARTNAME,
-        });
+        };
       })
     );
 }

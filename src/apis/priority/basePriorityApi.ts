@@ -1,7 +1,7 @@
 import axios from 'axios';
 import getSettings from "../../config/get-settings";
 
-const {priorityApiBase, Authorization} = getSettings("dev");
+const {priorityApiBase, Authorization} = getSettings();
 
 const instance = axios.create({
   baseURL: priorityApiBase,
