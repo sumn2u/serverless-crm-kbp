@@ -53,6 +53,22 @@ functions:
           method: post
           private: true
 
+  registerNotificationKey:
+    handler: src/functions/existOnCrm.existByPhone
+    events:
+      - http:
+          path: notifications/registerNotificationKey
+          method: post
+          private: true
+
+  createOrder:
+    handler: src/functions/orders.create
+    events:
+      - http:
+          path: crm/orders/create
+          method: post
+          private: true
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
@@ -61,6 +77,8 @@ plugins:
 custom:
     jest:
      collectCoverage: true
+    serverless-offline:
+      useChildProcesses: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

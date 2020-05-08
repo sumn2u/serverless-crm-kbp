@@ -1,48 +1,32 @@
 import * as _ from "lodash";
 import * as customers from "../apis/priority/customer";
-import * as accounts from "../apis/priority/accounts";
 import * as invoices from "../apis/priority/invoices";
 import "source-map-support/register";
-import {
-  internalErrorResponse,
-  noSuchCustomerResponse,
-} from "../common/responses";
-import { adaptPhoneNum } from "../utils/phoneNumber";
+import {internalErrorResponse, noSuchCustomerResponse, validResponse,} from "../common/responses";
+import {adaptPhoneNum} from "./utils/phoneNumber";
+import {getAccountBalance} from "./utils/accountBalance";
+import {getTop10} from "./utils/top10";
 
-const validResponse = (params) => ({
-  statusCode: 200,
-  body: JSON.stringify(
-    {
-      ...params,
-    },
-    null,
-    2
-  ),
-});
+async function getPurchaseData(id) {
+  const invoicesList = await invoices.findByCutomerId(id);
+  // console.log("*** invoicesList", invoicesList);
 
-async function getAccountBalance(id) {
-  return accounts.findById(id).then((accountsList) => {
-    const currAccount = _.first(accountsList);
-    return currAccount ? currAccount.BALANCE1 : null;
-  });
-}
+  const top10 = await getTop10(invoicesList).catch(e => ([]));
 
-async function getLastPurchaseData(id) {
-  return invoices.findById(id).then((invoicesList) => {
-    const latestInvoice = _.first(invoicesList);
-    if (!latestInvoice)
-      return { lastPurchaseAmount: null, lastPurchaseDate: null };
-    return {
-      lastPurchaseAmount: latestInvoice.TOTPRICE,
-      lastPurchaseDate: latestInvoice.IVDATE,
-    };
-  });
+  const latestInvoice = _.first(invoicesList);
+  if (!latestInvoice)
+    return {lastPurchaseAmount: null, lastPurchaseDate: null};
+  return {
+    lastPurchaseAmount: Math.abs(latestInvoice.TOTPRICE),
+    lastPurchaseDate: latestInvoice.IVDATE,
+    top10,
+  };
 }
 
 async function getMoreData(id: String) {
   const [accountBalance, latestInvoiceData] = await Promise.all([
     getAccountBalance(id),
-    getLastPurchaseData(id),
+    getPurchaseData(id),
   ]);
 
   const data = {
@@ -50,7 +34,7 @@ async function getMoreData(id: String) {
     ...latestInvoiceData,
   };
 
-  console.log("*** data", data);
+  // console.log("*** data", data);
 
   return data;
 }
@@ -60,7 +44,7 @@ export async function validatePhoneNumberExists(data) {
   const phoneNumber = adaptPhoneNum(data.phoneNumber);
 
   const result = await customers.findByPhone(phoneNumber, nationalId);
-
+  console.log('*** result', result);
   const count = result.length;
 
   if (count > 1) {
@@ -72,11 +56,13 @@ export async function validatePhoneNumberExists(data) {
 
   const persona = result[0];
   const id = persona.CUSTNAME;
+  console.log('*** id', id);
   const extraData = await getMoreData(id);
-  console.log("*** extraData", extraData);
+  // console.log("*** extraData", extraData);
 
   return validResponse({
     name: persona.CUSTDES,
+    crmId: persona.CUSTNAME,
     phoneNumber: persona.PHONE,
     address: persona.ADDRESS2
       ? `${persona.ADDRESS} ${persona.ADDRESS2}, ${persona.STATE}`

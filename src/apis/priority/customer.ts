@@ -1,23 +1,32 @@
-import { template } from "lodash";
-import fetch1 from "node-fetch";
+import { filter, template } from "lodash";
 
-import getSettings from "../../config/get-settings";
+import baseApi from "./basePriorityApi";
+import { adaptPhoneNum } from "../../functions/utils/phoneNumber";
 
-const { priorityApiBase, Authorization } = getSettings("dev");
+const fields = "CUSTDES,PHONE,ADDRESS2,ADDRESS,STATE,VATNUM,CREATEDDATE,AGENTNAME,SPEC6,CUSTNAME,STATDES";
+const phonePath =
+  `/CUSTOMERS?$filter=PHONE eq '<%= phone %>'&$select=${fields}`;
+const phoneNationalIdPath =
+  `/CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>' &$select=${fields}`;
 
-const phonePath = "CUSTOMERS?$filter=PHONE eq '<%= phone %>'";
-const phoneNationalIdPath = "CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>'";
+export async function findByPhone(phone: string, nationalId?: string) {
+  const formattedPhoneNumber = adaptPhoneNum(phone);
 
-export function findByPhone(phone, nationalId = null) {
   const path = nationalId ? phoneNationalIdPath : phonePath;
-  const url = template(`${priorityApiBase}/${path}`)({ phone, nationalId });
+  // console.log("*** path", path);
+  const url = template(path)({ phone: formattedPhoneNumber, nationalId });
+  // console.log("*** url", url);
 
-  console.log(url, "***");
+  try {
+    const response = await baseApi.get(url);
+    // console.log('*** response', response);
+    const possibleCustomers = response.data.value;
+    // console.log('*** possibleCustomers', possibleCustomers);
 
-  return fetch1(url, {
-    method: "get",
-    headers: { Authorization }
-  })
-    .then(response => response.json())
-    .then(response => response.value);
+    const customers = filter(possibleCustomers, (cus) => cus.STATDES == "פעיל");
+
+    return customers;
+  } catch (e) {
+    console.error(e);
+  }
 }

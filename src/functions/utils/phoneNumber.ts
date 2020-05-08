@@ -6,5 +6,9 @@ export function adaptPhoneNum(phoneNumber) {
     return phoneNumber.replace("+97205", "05");
   }
 
+  if (phoneNumber.startsWith("+1")) {
+    return phoneNumber.replace("+1", "1");
+  }
+
   return phoneNumber;
 }
