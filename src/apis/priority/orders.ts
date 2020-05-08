@@ -3,17 +3,17 @@ import baseApi from './basePriorityApi';
 const path = "/ORDERS";
 
 export interface IOrder {
-  customerId: string;
-  items: Array<{ productId: string; amount: number }>;
+  customer_id: string;
+  line_items: Array<{ product_id: string; quantity: number }>;
 }
 
 export function buildOrder(order: IOrder) {
   return {
-    CUSTNAME: order.customerId,
-    ORDERITEMS_SUBFORM: order.items.map((item) => ({
-      PARTNAME: item.productId,
+    CUSTNAME: order.customer_id,
+    ORDERITEMS_SUBFORM: order.line_items.map((item) => ({
+      PARTNAME: item.product_id,
       DUEDATE: new Date().toISOString(),
-      QUANT: item.amount,
+      QUANT: item.quantity,
     })),
   };
 }

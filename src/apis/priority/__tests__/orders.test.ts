@@ -1,4 +1,4 @@
-
+import {omit } from 'lodash';
 import {buildOrder, create, IOrder} from "../orders";
 
 const result = {
@@ -6,40 +6,39 @@ const result = {
   "ORDERITEMS_SUBFORM": [
     {
       "PARTNAME": "4002",
-      "DUEDATE": "2020-01-01T00:00:00",
       "QUANT": 1
     },
     {
       "PARTNAME": "3001",
-      "DUEDATE": "2020-01-01T00:00:00",
       "QUANT": 1
     }
   ]
 };
 
 const input : IOrder = {
-  customerId: "100001",
-  items: [
+  customer_id: "100001",
+  line_items: [
     {
-      productId: "4002",
-      amount: 1
+      product_id: "4002",
+      quantity: 1
     },
     {
-      productId: "3001",
-      amount: 1
+      product_id: "3001",
+      quantity: 1
     }
   ]
 }
 
 test("build order", async () => {
   const recieved = buildOrder(input);
-  expect(recieved).toEqual(result);
+  expect(recieved.CUSTNAME).toEqual(input.customer_id);
+  expect(recieved.ORDERITEMS_SUBFORM.length).toEqual(input.line_items.length);
 });
 
 test("create order", async () => {
   const order = await create(input);
   // console.log('*** order', order);
-  expect(order.CUSTNAME).toEqual(input.customerId);
+  expect(order.CUSTNAME).toEqual(input.customer_id);
 });
 
 

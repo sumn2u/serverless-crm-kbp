@@ -6,9 +6,9 @@ export interface iSettings {
 
 const shared = {
   wooCommerce: {
-    url: "https://example.com",
-    consumerKey: "consumer_key",
-    consumerSecret: "consumer_secret",
+    url: "https://kb-pure.eagleray.co/",
+    consumerKey: "ck_ef61c88123f81771fa1b5c775751112c7d59fb21",
+    consumerSecret: "cs_5d02334ca3ecd1d8bd2fce21b201f78ba614c697",
     version: "wc/v3",
     queryStringAuth: true, // Force Basic Authentication as query string true and using under HTTPS
   },
