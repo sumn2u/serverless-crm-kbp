@@ -1,9 +1,23 @@
-const ENV = require('./env') ? require('./env').default : {};
+const ENV = require("./env") ? require("./env").default : {};
 
 export interface iSettings {
-  priorityApiBase: string;
-  Authorization: string;
-  wooCommerce: object;
+  priority: {
+    priorityApiBase: string;
+    Authorization: string;
+  };
+  wooCommerce: {
+    url: string;
+    consumerKey: string;
+    consumerSecret: string;
+    version: string;
+    queryStringAuth: boolean;
+  },
+  auth0: {
+    domain: string;
+    clientId: string;
+    clientSecret: string;
+    scope: string;
+  },
 }
 
 const getSettings = (env = "dev"): iSettings => {
