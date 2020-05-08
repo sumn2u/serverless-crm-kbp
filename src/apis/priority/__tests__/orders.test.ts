@@ -1,4 +1,3 @@
-// import fetch from "node-fetch";
 
 import {buildOrder, create, IOrder} from "../orders";
 
@@ -33,12 +32,13 @@ const input : IOrder = {
 }
 
 test("build order", async () => {
-  expect(buildOrder(input)).toEqual(result);
+  const recieved = buildOrder(input);
+  expect(recieved).toEqual(result);
 });
 
 test("create order", async () => {
   const order = await create(input);
-  console.log('*** order', order);
+  // console.log('*** order', order);
   expect(order.CUSTNAME).toEqual(input.customerId);
 });
 

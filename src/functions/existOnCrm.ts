@@ -44,7 +44,7 @@ export async function validatePhoneNumberExists(data) {
   const phoneNumber = adaptPhoneNum(data.phoneNumber);
 
   const result = await customers.findByPhone(phoneNumber, nationalId);
-console.log('*** result', result);
+  console.log('*** result', result);
   const count = result.length;
 
   if (count > 1) {

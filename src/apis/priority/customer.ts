@@ -1,17 +1,21 @@
 import { filter, template } from "lodash";
 
 import baseApi from "./basePriorityApi";
-import {adaptPhoneNum} from "../../functions/utils/phoneNumber";
+import { adaptPhoneNum } from "../../functions/utils/phoneNumber";
 
-const phonePath = "/CUSTOMERS?$filter=PHONE eq '<%= phone %>'";
+const fields = "CUSTDES,PHONE,ADDRESS2,ADDRESS,STATE,VATNUM,CREATEDDATE,AGENTNAME,SPEC6,CUSTNAME,STATDES";
+const phonePath =
+  `/CUSTOMERS?$filter=PHONE eq '<%= phone %>'&$select=${fields}`;
 const phoneNationalIdPath =
-  "/CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>' &$select=CUSTDES,PHONE,ADDRESS2,ADDRESS,STATE,VATNUM,CREATEDDATE,AGENTNAME,SPEC6,CUSTNAME";
+  `/CUSTOMERS?$filter=PHONE eq '<%= phone %>' and VATNUM eq '<%= nationalId %>' &$select=${fields}`;
 
-export async function findByPhone(phone, nationalId = null) {
+export async function findByPhone(phone: string, nationalId?: string) {
   const formattedPhoneNumber = adaptPhoneNum(phone);
 
   const path = nationalId ? phoneNationalIdPath : phonePath;
+  // console.log("*** path", path);
   const url = template(path)({ phone: formattedPhoneNumber, nationalId });
+  // console.log("*** url", url);
 
   try {
     const response = await baseApi.get(url);
@@ -21,7 +25,7 @@ export async function findByPhone(phone, nationalId = null) {
 
     const customers = filter(possibleCustomers, (cus) => cus.STATDES == "פעיל");
 
-    return customers
+    return customers;
   } catch (e) {
     console.error(e);
   }
