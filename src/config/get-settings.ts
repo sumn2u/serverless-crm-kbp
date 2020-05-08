@@ -1,4 +1,10 @@
-import ENV, { iSettings } from "./env";
+const ENV = require('./env') ? require('./env').default : {};
+
+export interface iSettings {
+  priorityApiBase: string;
+  Authorization: string;
+  wooCommerce: object;
+}
 
 const getSettings = (env = "dev"): iSettings => {
   // What is __DEV__ ?
