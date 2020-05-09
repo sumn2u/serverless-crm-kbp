@@ -1,5 +1,6 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import getSettings from "../../config/get-settings";
+import { Item } from "../../common/responses";
 
 const { wooCommerce } = getSettings();
 
@@ -16,7 +17,15 @@ async function getCustomerById(customerId) {
     });
 }
 
-export async function getOrderById(orderId) {
+
+
+export interface IWpOrder {
+  id: number;
+  line_items: Item[];
+  customer: { username: string };
+}
+
+export async function getOrderById(orderId: string): Promise<IWpOrder> {
   return WooCommerce.get(`orders/${orderId}`)
     .then(async (response) => {
       // console.log(JSON.stringify(response.data));

@@ -44,7 +44,7 @@ export async function validatePhoneNumberExists(data) {
   const phoneNumber = adaptPhoneNum(data.phoneNumber);
 
   const result = await customers.findByPhone(phoneNumber, nationalId);
-  console.log('*** result', result);
+  // console.log('*** result', result);
   const count = result.length;
 
   if (count > 1) {
@@ -56,7 +56,7 @@ export async function validatePhoneNumberExists(data) {
 
   const persona = result[0];
   const id = persona.CUSTNAME;
-  console.log('*** id', id);
+  // console.log('*** id', id);
   const extraData = await getMoreData(id);
   // console.log("*** extraData", extraData);
 
@@ -77,7 +77,7 @@ export async function validatePhoneNumberExists(data) {
 
 export async function existByPhone(event) {
   let body = JSON.parse(event.body);
-  console.log("*** body", body);
+  // console.log("*** body", body);
   if (!body.phoneNumber) return internalErrorResponse("No phoneNumber");
 
   return validatePhoneNumberExists(body).catch((error) => {
