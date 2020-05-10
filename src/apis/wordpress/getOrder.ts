@@ -18,17 +18,22 @@ async function getCustomerById(customerId) {
 }
 
 
+export interface IWpItem {
+  sku: string;
+  quantity: number;
+}
 
 export interface IWpOrder {
   id: number;
-  line_items: Item[];
+  line_items: IWpItem[];
   customer: { username: string };
 }
 
 export async function getOrderById(orderId: string): Promise<IWpOrder> {
+  console.log('*** orderId', orderId);
   return WooCommerce.get(`orders/${orderId}`)
     .then(async (response) => {
-      // console.log(JSON.stringify(response.data));
+      console.log('woocommerce order',JSON.stringify(response.data));
       const { id, line_items, customer_id } = response.data;
       const customer = await getCustomerById(customer_id);
 
@@ -39,6 +44,6 @@ export async function getOrderById(orderId: string): Promise<IWpOrder> {
       };
     })
     .catch((error) => {
-      console.log(error.response.data);
+      console.log('error getting order', error.response.data);
     });
 }
