@@ -5,6 +5,7 @@ const {
   priority: { priorityApiBase, Authorization },
 } = getSettings();
 
+// console.log('*** priorityApiBase', priorityApiBase);
 const instance = axios.create({
   baseURL: priorityApiBase,
   headers: {

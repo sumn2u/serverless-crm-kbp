@@ -13,7 +13,8 @@ async function getCustomerById(customerId) {
       return response.data;
     })
     .catch((error) => {
-      console.log(error.response.data);
+      console.error('Error fetching wp customer for order', error.response.data);
+      throw Error(error);
     });
 }
 
@@ -44,6 +45,7 @@ export async function getOrderById(orderId: string): Promise<IWpOrder> {
       };
     })
     .catch((error) => {
-      console.log('error getting order', error.response.data);
+      console.error('error getting order', error.response.data);
+      throw Error(`Order ${orderId} not found`)
     });
 }

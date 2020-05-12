@@ -1,21 +1,21 @@
 import * as orders from "../apis/priority/orders";
-import { internalErrorResponse, validResponse, Item } from "../common/responses";
-import {getOrderById, IWpItem, IWpOrder} from "../apis/wordpress/getOrder";
+import {
+  internalErrorResponse,
+  validResponse,
+  Item,
+} from "../common/responses";
+import { getOrderById, IWpItem, IWpOrder } from "../apis/wordpress/getOrder";
 import * as auth0 from "../apis/auth0/management";
 
-export async function create(event) {
-  // console.log("*** event", event);
-  let body = JSON.parse(event.body);
-  if (!body.order_id) return internalErrorResponse("Missing order_id on body");
-
+async function fetchOrderData(orderId) {
   // console.log("*** body.order_id", body.order_id);
-  const inputOrder: IWpOrder = await getOrderById(body.order_id);
-  // console.log("*** inputOrder", inputOrder);
+  const orderFromWp: IWpOrder = await getOrderById(orderId);
+  // console.log("*** orderFromWp", orderFromWp);
 
   // find the priority customer id from auth0
   const {
     customer: { username: wpUserName },
-  } = inputOrder;
+  } = orderFromWp;
 
   // console.log("*** wpUserName", wpUserName);
 
@@ -27,17 +27,41 @@ export async function create(event) {
   // console.log("*** auth0User", auth0User);
   console.log("*** crmId", crmId);
 
-  const line_items: Item[] = inputOrder.line_items.map((item: IWpItem): Item => ({
-    quantity: item.quantity,
-    product_id: item.sku,
-  }));
+  return {
+    crmId,
+    items: orderFromWp.line_items,
+  };
+}
+
+async function pushToCrm({ items, crmId }) {
+  const line_items: Item[] = items.map(
+    (item: IWpItem): Item => ({
+      quantity: item.quantity,
+      product_id: item.sku,
+    })
+  );
 
   const order = await orders.create({
     customer_id: crmId,
     line_items,
   });
 
-  // console.log("*** order", order);
+  return order;
+}
 
-  return validResponse(order);
+export async function create(event) {
+  // console.log("*** event", event);
+  let body = JSON.parse(event.body);
+  if (!body.order_id) return internalErrorResponse("Missing order_id on body");
+
+  try {
+    const {crmId, items} = await fetchOrderData(body.order_id);
+
+    const crmOrder = await pushToCrm({crmId, items});
+
+    return validResponse(crmOrder);
+  } catch (e) {
+    console.error('Error on creating order', e);
+    return internalErrorResponse(e);
+  }
 }

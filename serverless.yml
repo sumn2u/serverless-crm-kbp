@@ -21,6 +21,7 @@ provider:
   apiKeys:
     - access_crm_query_key
   runtime: nodejs12.x
+  timeout: 10
 
 functions:
   returnNotValid:
