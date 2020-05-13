@@ -18,7 +18,7 @@ export async function findByPhone(phone: string, nationalId?: string) {
   // console.log("*** url", url);
 
   try {
-    const response = await baseApi.get(url);
+    const response = await baseApi().get(url);
     // console.log('*** response', response);
     const possibleCustomers = response.data.value;
     // console.log('*** possibleCustomers', possibleCustomers);

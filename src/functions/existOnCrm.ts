@@ -2,20 +2,25 @@ import * as _ from "lodash";
 import * as customers from "../apis/priority/customer";
 import * as invoices from "../apis/priority/invoices";
 import "source-map-support/register";
-import {internalErrorResponse, noSuchCustomerResponse, validResponse,} from "../common/responses";
-import {adaptPhoneNum} from "./utils/phoneNumber";
-import {getAccountBalance} from "./utils/accountBalance";
-import {getTop10} from "./utils/top10";
+import {
+  internalErrorResponse,
+  noSuchCustomerResponse,
+  validResponse,
+} from "../common/responses";
+import { adaptPhoneNum } from "./utils/phoneNumber";
+import { getAccountBalance } from "./utils/accountBalance";
+import { getTop10 } from "./utils/top10";
+import { initSettings } from "../config/getSettings";
 
 async function getPurchaseData(id) {
   const invoicesList = await invoices.findByCutomerId(id);
   // console.log("*** invoicesList", invoicesList);
 
-  const top10 = await getTop10(invoicesList).catch(e => ([]));
+  const top10 = await getTop10(invoicesList).catch((e) => []);
 
   const latestInvoice = _.first(invoicesList);
   if (!latestInvoice)
-    return {lastPurchaseAmount: null, lastPurchaseDate: null};
+    return { lastPurchaseAmount: null, lastPurchaseDate: null };
   return {
     lastPurchaseAmount: Math.abs(latestInvoice.TOTPRICE),
     lastPurchaseDate: latestInvoice.IVDATE,
@@ -44,7 +49,7 @@ export async function validatePhoneNumberExists(data) {
   const phoneNumber = adaptPhoneNum(data.phoneNumber);
 
   const result = await customers.findByPhone(phoneNumber, nationalId);
-  console.log('*** result', result);
+  // console.log('*** result', result);
   const count = result.length;
 
   if (count > 1) {
@@ -56,7 +61,7 @@ export async function validatePhoneNumberExists(data) {
 
   const persona = result[0];
   const id = persona.CUSTNAME;
-  console.log('*** id', id);
+  // console.log('*** id', id);
   const extraData = await getMoreData(id);
   // console.log("*** extraData", extraData);
 
@@ -76,8 +81,8 @@ export async function validatePhoneNumberExists(data) {
 }
 
 export async function existByPhone(event) {
+  await initSettings();
   let body = JSON.parse(event.body);
-  console.log("*** body", body);
   if (!body.phoneNumber) return internalErrorResponse("No phoneNumber");
 
   return validatePhoneNumberExists(body).catch((error) => {

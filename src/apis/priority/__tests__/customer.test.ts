@@ -1,6 +1,11 @@
 import * as search from "../customer";
+import {initSettings} from "../../../config/getSettings";
 
 describe('customer search', function () {
+  beforeAll(async () => {
+    await initSettings();
+  });
+
   const phone = '0534321460';
   test("search succeed", async () => {
     const customer = await search.findByPhone(phone);

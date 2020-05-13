@@ -1,16 +1,68 @@
 import * as orders from "../apis/priority/orders";
-import { validResponse } from "../common/responses";
-import { getOrderById } from "../apis/wordpress/getOrder";
+import {
+  internalErrorResponse,
+  validResponse,
+  Item,
+} from "../common/responses";
+import { getOrderById, IWpItem, IWpOrder } from "../apis/wordpress/getOrder";
+import * as auth0 from "../apis/auth0/management";
+import {initSettings} from "../config/getSettings";
 
-export async function create(event) {
-  let body = JSON.parse(event.body);
-  console.log("*** body", body);
-  console.log("*** body.order_id", body.order_id);
-  const inputOrder = await getOrderById(body.order_id);
+async function fetchOrderData(orderId) {
+  // console.log("*** body.order_id", body.order_id);
+  const orderFromWp: IWpOrder = await getOrderById(orderId);
+  // console.log("*** orderFromWp", orderFromWp);
 
   // find the priority customer id from auth0
+  const {
+    customer: { username: wpUserName },
+  } = orderFromWp;
 
+  // console.log("*** wpUserName", wpUserName);
 
-  const order = await orders.create(inputOrder);
-  return validResponse(order);
+  const auth0User = await auth0.searchByPhoneNumber(wpUserName);
+  const {
+    user_metadata: { crmId },
+  } = auth0User[0];
+
+  // console.log("*** auth0User", auth0User);
+  console.log("*** crmId", crmId);
+
+  return {
+    crmId,
+    items: orderFromWp.line_items,
+  };
+}
+
+async function pushToCrm({ items, crmId }) {
+  const line_items: Item[] = items.map(
+    (item: IWpItem): Item => ({
+      quantity: item.quantity,
+      product_id: item.sku,
+    })
+  );
+
+  const order = await orders.create({
+    customer_id: crmId,
+    line_items,
+  });
+
+  return order;
+}
+
+export async function create(event) {
+  await initSettings();
+  let body = JSON.parse(event.body);
+  if (!body.order_id) return internalErrorResponse("Missing order_id on body");
+
+  try {
+    const {crmId, items} = await fetchOrderData(body.order_id);
+
+    const crmOrder = await pushToCrm({crmId, items});
+
+    return validResponse(crmOrder);
+  } catch (e) {
+    console.error('Error on creating order', e);
+    return internalErrorResponse(e);
+  }
 }
