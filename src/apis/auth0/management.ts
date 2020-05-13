@@ -1,10 +1,10 @@
 import { ManagementClient } from "auth0";
-import getSettings from "../../config/get-settings";
-const { auth0: settings } = getSettings();
-
-const auth0 = new ManagementClient({ ...settings });
+import getSettings from "../../config/getSettings";
 
 export async function searchByPhoneNumber(phone) {
+  const { auth0: settings } = getSettings();
+  const auth0 = new ManagementClient({ ...settings });
+
   var params = {
     search_engine: 'v3',
     q: `phone_number:*${phone}*`,

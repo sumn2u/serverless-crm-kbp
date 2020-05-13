@@ -1,7 +1,8 @@
 // const ENV = require("./env") ? require("./env").default : {};
-import SettingsByEnv from './env'
+import {mapKeys, set} from "lodash";
 
-console.log('*** ENV', SettingsByEnv);
+import SettingsByEnv from "./configByEnv";
+import { getSecrets } from "./awsSecrets";
 
 export interface iSettings {
   priority: {
@@ -14,19 +15,34 @@ export interface iSettings {
     consumerSecret: string;
     version: string;
     queryStringAuth: boolean;
-  },
+  };
   auth0: {
     domain: string;
     clientId: string;
     clientSecret: string;
     scope: string;
-  },
+  };
+}
+
+let configInitialized = false;
+let settings = {};
+
+export async function initSettings(env = "dev") {
+  const secrets: object = await getSecrets();
+  const config: iSettings = { ...SettingsByEnv.dev };
+  mapKeys(secrets, (value, key) => {
+    set(config, key, value);
+  });
+
+  console.log('*** config', config);
+  console.log('*** secrets', secrets);
+  settings = config;
+  configInitialized = true;
 }
 
 const getSettings = (env = "dev"): iSettings => {
-  // What is __DEV__ ?
-  // This variable is set to true when react-native is running in Dev mode.
-  // __DEV__ is true when run locally, but false when published.
+  if (!settings) throw Error('wait for initSettings');
+
   if (env === "dev") {
     return SettingsByEnv.dev;
   } else if (env === "staging") {

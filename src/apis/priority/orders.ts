@@ -23,13 +23,13 @@ export async function create(order: IOrder): Promise<any> {
   const data = buildOrder(order);
   console.log('*** data', data);
 
-  return baseApi.post(path, data)
+  return baseApi().post(path, data)
     .then(response => {
       // console.log('*** response', response);
-      // console.log('*** response.data', response.data);
+      console.log('*** response.data', response.data);
       return response.data;
     })
     .catch(error => {
-      console.log(error, 'error on create order');
+      console.log(error, 'error on create order in priority crm', data);
     })
 }

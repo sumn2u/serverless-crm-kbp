@@ -1,17 +1,25 @@
 import axios from "axios";
-import getSettings from "../../config/get-settings";
+import getSettings from "../../config/getSettings";
 
-const {
-  priority: { priorityApiBase, Authorization },
-} = getSettings();
+let baseApi;
+function getBaseApi() {
+  if (!baseApi) {
+    const {
+      priority: { priorityApiBase, Authorization },
+    } = getSettings();
 
-// console.log('*** priorityApiBase', priorityApiBase);
-const instance = axios.create({
-  baseURL: priorityApiBase,
-  headers: {
-    Authorization,
-    "Content-Type": "application/json",
-  },
-});
+    // console.log('*** priorityApiBase', priorityApiBase);
+    const instance = axios.create({
+      baseURL: priorityApiBase,
+      headers: {
+        Authorization,
+        "Content-Type": "application/json",
+      },
+    });
 
-export default instance;
+    baseApi = instance;
+  }
+  return baseApi;
+}
+
+export default getBaseApi;
