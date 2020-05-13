@@ -8,7 +8,7 @@ describe("auth0 - management", function () {
 
   test("init", async () => {
     const customer = await searchByPhoneNumber('972534321460');
-    console.log('*** customer', customer);
+    // console.log('*** customer', customer);
     expect(customer[0]).toHaveProperty('name');
   });
 });

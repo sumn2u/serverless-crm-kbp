@@ -34,8 +34,8 @@ export async function initSettings(env = "dev") {
     set(config, key, value);
   });
 
-  console.log('*** config', config);
-  console.log('*** secrets', secrets);
+  // console.log('*** config', config);
+  // console.log('*** secrets', secrets);
   settings = config;
   configInitialized = true;
 }
