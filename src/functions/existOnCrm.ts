@@ -81,6 +81,11 @@ export async function validatePhoneNumberExists(data) {
 }
 
 export async function existByPhone(event) {
+  if (event.source === 'serverless-plugin-warmup') {
+    console.log('WarmUp - Lambda is warm!');
+    return validResponse({});
+  }
+
   await initSettings();
   let body = JSON.parse(event.body);
   if (!body.phoneNumber) return internalErrorResponse("No phoneNumber");
