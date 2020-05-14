@@ -27,6 +27,7 @@ export async function findByPhone(phone: string, nationalId?: string) {
 
     return customers;
   } catch (e) {
-    console.error(e);
+    console.error('Error priority get customer', e);
+    throw e;
   }
 }

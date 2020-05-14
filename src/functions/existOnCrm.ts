@@ -44,6 +44,8 @@ async function getMoreData(id: String) {
   return data;
 }
 
+
+
 export async function validatePhoneNumberExists(data) {
   const nationalId = data.nationalId;
   const phoneNumber = adaptPhoneNum(data.phoneNumber);
@@ -79,6 +81,8 @@ export async function validatePhoneNumberExists(data) {
     ...extraData,
   });
 }
+
+console.log('*** ', process.env);
 
 export async function existByPhone(event) {
   if (event.source === 'serverless-plugin-warmup') {

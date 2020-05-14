@@ -3,7 +3,7 @@
     function: existByPhone
   request:
     headers:
-      x-api-key: cvIzIxcE1R1GlH5nP4zn925bHFDXTBwFc2NwjE66
+      x-api-key: ${env:SLS_DEV_API_KEY}
       Content-Type: application/json
     body:
       phoneNumber: '+972534321460'
@@ -16,7 +16,7 @@
     function: existByPhone
   request:
     headers:
-      x-api-key: cvIzIxcE1R1GlH5nP4zn925bHFDXTBwFc2NwjE66
+      x-api-key: ${env:SLS_DEV_API_KEY}
       Content-Type: application/json
     body:
       phoneNumber: '+97253432146'
@@ -29,7 +29,7 @@
     function: existByPhone
   request:
     headers:
-      x-api-key: cvIzIxcE1R1GlH5nP4zn925bHFDXTBwFc2NwjE66
+      x-api-key: ${env:SLS_DEV_API_KEY}
       Content-Type: application/json
     body:
       phoneNumber: '+972534321460'

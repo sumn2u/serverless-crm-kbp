@@ -22,7 +22,9 @@
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
+    "dotenv": "^8.2.0",
     "jest": "^26.0.1",
+    "serverless-export-env": "arabold/serverless-export-env",
     "serverless-jest-plugin": "^0.3.0",
     "serverless-offline": "^6.1.5",
     "serverless-plugin-typescript": "^1.1.9",
