@@ -18,7 +18,7 @@ const shared = {
   },
 };
 
-const configByEnv: { dev: any; staging: any; prod: any } = {
+const configByEnv: { dev: any; qa: any; prod: any } = {
   dev: {
     ...shared,
     priority: {
@@ -26,11 +26,11 @@ const configByEnv: { dev: any; staging: any; prod: any } = {
       priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",
     },
   },
-  staging: {
+  qa: {
     ...shared,
     priority: {
       ...shared.priority,
-      priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",
+      priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/kbpure",
     },
   },
   prod: {

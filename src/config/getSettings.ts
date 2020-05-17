@@ -30,16 +30,7 @@ let settings: iSettings;
 function getByStage() {
   const stage = process.env.STAGE || 'dev';
   console.log('*** stage', stage);
-
-  if (stage === "dev") {
-    return SettingsByEnv.dev;
-  } else if (stage === "staging") {
-    return SettingsByEnv.staging;
-  } else if (stage === "prod") {
-    return SettingsByEnv.prod;
-  }
-
-  return SettingsByEnv.dev;
+  return SettingsByEnv[stage] || SettingsByEnv.dev;
 }
 
 export async function initSettings(env = "dev") {
@@ -49,7 +40,7 @@ export async function initSettings(env = "dev") {
     set(config, key, value);
   });
 
-  // console.log('*** config', config);
+  console.log('*** config', config);
   // console.log('*** secrets', secrets);
   settings = config;
   configInitialized = true;

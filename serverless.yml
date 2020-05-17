@@ -19,14 +19,13 @@ org: guy1812
 provider:
   name: aws
   apiKeys:
-    - access_crm_query_key
+    - access_crm_query_key_${self:provider.stage}
   runtime: nodejs12.x
   timeout: 10
   stage: ${opt:stage, self:custom.default_stage}
   environment:
     APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
     STAGE: ${self:provider.stage}
-    SLS_DEV_API_KEY: ${env:SLS_DEV_API_KEY}
 
 #  iamRoleStatements:
 #    - Effect: 'Allow'
@@ -86,15 +85,22 @@ plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-jest-plugin
-  - serverless-plugin-warmup
-  - serverless-export-env
-
+  - '@serverless/enterprise-plugin'
 custom:
   default_stage: dev
   jest:
     collectCoverage: true
   serverless-offline:
     useChildProcesses: true
+#  domain:
+#    dev: api.kb-pure.co.il
+#    prod: api.kb-pure.co.il
+#  customDomain:
+#    certificateName: '*.kb-pure.co.il'
+#    domainName:  ${self:custom.domain.${self:provider.stage}}
+#    basePath: ''
+#    #stage: ${self:provider.stage}
+#    createRoute53Record: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

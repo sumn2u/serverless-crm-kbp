@@ -82,7 +82,7 @@ export async function validatePhoneNumberExists(data) {
   });
 }
 
-console.log('*** ', process.env);
+// console.log('*** ', process.env);
 
 export async function existByPhone(event) {
   if (event.source === 'serverless-plugin-warmup') {
