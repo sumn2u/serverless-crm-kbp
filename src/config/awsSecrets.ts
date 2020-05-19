@@ -10,10 +10,16 @@ const request = awsSecretManagerClient.getSecretValue({
 });
 const promise = request.promise();
 
-export async function getSecrets() : Promise<object> {
-  const { SecretString } = await promise;
-  const secretsObj = JSON.parse(SecretString);
-  return secretsObj;
+export async function getSecrets(): Promise<object> {
+  return promise
+    .then(({ SecretString }) => {
+      const secretsObj = JSON.parse(SecretString);
+      return secretsObj;
+    })
+    .catch((error) => {
+      console.error("failed to fetch aws secrets", error);
+      return {};
+    });
 }
 
 // getSecrets();

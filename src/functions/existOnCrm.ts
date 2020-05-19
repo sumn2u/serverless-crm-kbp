@@ -16,7 +16,10 @@ async function getPurchaseData(id) {
   const invoicesList = await invoices.findByCutomerId(id);
   // console.log("*** invoicesList", invoicesList);
 
-  const top10 = await getTop10(invoicesList).catch((e) => []);
+  const top10 = await getTop10(invoicesList).catch((e) => {
+    console.error('failed to get top 10', e);
+    return [];
+  });
 
   const latestInvoice = _.first(invoicesList);
   if (!latestInvoice)
@@ -82,7 +85,7 @@ export async function validatePhoneNumberExists(data) {
   });
 }
 
-// console.log('*** ', process.env);
+console.log('*** ', process.env);
 
 export async function existByPhone(event) {
   if (event.source === 'serverless-plugin-warmup') {

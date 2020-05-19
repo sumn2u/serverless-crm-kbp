@@ -10,6 +10,6 @@ export interface IAccount {
 
 export function findById(id: string): Promise<[IAccount]> {
   const url = template(path)({ id });
-  // console.log(url, "***");
+  console.log(url, "***");
   return baseApi().get(url).then((response) => response.data.value);
 }
