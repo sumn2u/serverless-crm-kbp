@@ -90,7 +90,7 @@ plugins:
   - '@serverless/enterprise-plugin'
 
 custom:
-  secrets: '${ssm:/aws/reference/secretsmanager/serverless-crm-kbp~true}'
+  #secrets: '${ssm:/aws/reference/secretsmanager/serverless-crm-kbp~true}'
   default_stage: dev
   jest:
     collectCoverage: true
