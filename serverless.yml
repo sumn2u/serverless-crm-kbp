@@ -67,7 +67,7 @@ functions:
           private: true
 
   registerNotificationKey:
-    handler: src/functions/existOnCrm.existByPhone
+    handler: src/functions/notifications.registerNotificationKey
     events:
       - http:
           path: notifications/registerNotificationKey

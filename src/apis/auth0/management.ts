@@ -6,12 +6,20 @@ export async function searchByPhoneNumber(phone) {
   const auth0 = new ManagementClient({ ...settings });
 
   var params = {
-    search_engine: 'v3',
+    search_engine: "v3",
     q: `phone_number:*${phone}*`,
     per_page: 10,
-    page: 0
+    page: 0,
   };
 
-  console.log('*** auth0 user params', params);
-  return auth0.getUsers(params)
+  console.log("*** auth0 user params", params);
+  return auth0.getUsers(params);
+}
+
+export async function updateMetadata(userId: string, usermetadata: {}) {
+  const { auth0: settings } = getSettings();
+  const auth0 = new ManagementClient({ ...settings });
+
+  const params = { id: userId };
+  return auth0.updateUserMetadata(params, usermetadata);
 }
