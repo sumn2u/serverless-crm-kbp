@@ -72,6 +72,22 @@ functions:
       - http:
           path: notifications/registerNotificationKey
           method: post
+          private: false
+
+  sendNotifications:
+    handler: src/functions/notifications.sendNotifications
+    events:
+      - http:
+          path: notifications/send
+          method: post
+          private: true
+
+  checkNotificationPushStatus:
+    handler: src/functions/notifications.checkNotificationPushStatus
+    events:
+      - http:
+          path: notifications/send
+          method: post
           private: true
 
   createOrder:

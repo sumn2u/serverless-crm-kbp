@@ -1,6 +1,6 @@
-import { initSettings } from "../config/getSettings";
-import { internalErrorResponse, validResponse } from "../common/responses";
-import { updateMetadata } from "../apis/auth0/management";
+import { initSettings } from "../../config/getSettings";
+import { internalErrorResponse, validResponse } from "../../common/responses";
+import { updateMetadata } from "../../apis/auth0/management";
 
 export async function registerNotificationKey(event) {
   await initSettings();

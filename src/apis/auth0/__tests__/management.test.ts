@@ -1,4 +1,8 @@
-import { searchByPhoneNumber, updateMetadata } from "../management";
+import {
+  searchByPhoneNumber,
+  searchForPushableTokens,
+  updateMetadata,
+} from "../management";
 import { initSettings } from "../../../config/getSettings";
 
 describe("auth0 - management", function () {
@@ -26,5 +30,11 @@ describe("auth0 - management", function () {
 
     console.log("*** response", response);
     expect(response[0]).toHaveProperty("name");
+  });
+
+  test("searchForPushableTokens", async () => {
+    const tokens = await searchForPushableTokens();
+    console.log("*** tokens", JSON.stringify(tokens, null, 2));
+    expect(tokens[0]).toHaveProperty("user_metadata");
   });
 });

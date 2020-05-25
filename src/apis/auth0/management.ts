@@ -23,3 +23,18 @@ export async function updateMetadata(userId: string, usermetadata: {}) {
   const params = { id: userId };
   return auth0.updateUserMetadata(params, usermetadata);
 }
+
+export async function searchForPushableTokens(page = 0) {
+  const { auth0: settings } = getSettings();
+  const auth0 = new ManagementClient({ ...settings });
+
+  const params = {
+    search_engine: "v3",
+    q: `user_metadata.pushToken.sendNotifications:true`,
+    per_page: 100,
+    page,
+    fields: "name,user_id,user_metadata.pushToken",
+  };
+
+  return auth0.getUsers(params);
+}
