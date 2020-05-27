@@ -13,14 +13,15 @@ function getWooCommerce() {
 }
 
 async function getCustomerById(customerId) {
-  return getWooCommerce().get(`customers/${customerId}`)
+  return getWooCommerce()
+    .get(`customers/${customerId}`)
     .then((response) => {
       // console.log(JSON.stringify(response.data));
       return response.data;
     })
     .catch((error) => {
       console.error(
-        "Error fetching wp customer for order",
+        `Error fetching wp customer: ${customerId} (for order)`,
         error.response.data
       );
       throw Error(error);
@@ -39,11 +40,12 @@ export interface IWpOrder {
 }
 
 export async function getOrderById(orderId: string): Promise<IWpOrder> {
-  console.log("fetching /orders/", orderId);
-  return getWooCommerce().get(`orders/${orderId}`)
+  console.log(`fetching: /orders/${orderId}`);
+
+  return getWooCommerce()
+    .get(`orders/${orderId}`)
     .then(async (response) => {
-      // console.log("*** response", response);
-      // console.log("woocommerce order", JSON.stringify(response.data));
+      console.log("*** response.data", response.data);
       const { id, line_items, customer_id } = response.data;
       const customer = await getCustomerById(customer_id);
 
@@ -54,8 +56,8 @@ export async function getOrderById(orderId: string): Promise<IWpOrder> {
       };
     })
     .catch((error) => {
-      console.log("*** error", error);
-      console.error("error getting order", error.response.data);
+      // console.log("*** error", error);
+      // console.error("error getting order", error.response.data);
       throw Error(`Order ${orderId} not found`);
     });
 }
