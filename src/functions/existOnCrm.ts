@@ -85,11 +85,6 @@ export async function validatePhoneNumberExists(data) {
   });
 }
 
-//console.log('*** ', JSON.parse(process.env.SECRETS));
-console.log('*** ', process.env);
-console.log('*** ', process.env.SECRETS);
-
-
 export async function existByPhone(event) {
   if (event.source === 'serverless-plugin-warmup') {
     console.log('WarmUp - Lambda is warm!');
