@@ -56,6 +56,7 @@ export async function create(event) {
   if (!body.order_id) return internalErrorResponse("Missing order_id on body");
 
   try {
+    console.log('Order Id:', body.order_id);
     const { crmId, items } = await fetchOrderData(body.order_id);
 
     const crmOrder = await pushToCrm({ crmId, items });
