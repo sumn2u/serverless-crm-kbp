@@ -3,13 +3,14 @@ import { initSettings } from "../../../config/getSettings";
 
 jest.setTimeout(10000); // 1 second
 
+const testOrder = 416;
 describe("Wordpress API", function () {
   beforeAll(async () => {
     await initSettings();
   });
 
   test("getOrder", async () => {
-    const order = await getOrderById("156");
-    expect(order.id).toEqual(156);
+    const order = await getOrderById(testOrder.toString());
+    expect(order.id).toEqual(testOrder);
   });
 });

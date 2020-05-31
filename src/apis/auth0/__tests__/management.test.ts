@@ -29,7 +29,7 @@ describe("auth0 - management", function () {
     const response = await updateMetadata(userId, usermetadata);
 
     console.log("*** response", response);
-    expect(response[0]).toHaveProperty("name");
+    expect(response).toHaveProperty("name");
   });
 
   test("searchForPushableTokens", async () => {
