@@ -112,13 +112,3 @@ custom:
     collectCoverage: true
   serverless-offline:
     useChildProcesses: true
-  domain:
-    dev: api.kb-pure.co.il
-    prod: api.kb-pure.co.il
-  customDomain:
-#    certificateName: '*.kb-pure.co.il'
-    domainName:  ${self:custom.domain.${self:provider.stage}}
-#    basePath: ''
-#    #stage: ${self:provider.stage}
-#    createRoute53Record: true
-
