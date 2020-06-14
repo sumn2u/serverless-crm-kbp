@@ -1561,6 +1561,13 @@ array-unique@^0.3.2:
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.3.2.tgz#a894b75d4bc4f6cd679ef3244a9fd8f46ae2d428"
   integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
 
+artillery-plugin-aws-sigv4@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/artillery-plugin-aws-sigv4/-/artillery-plugin-aws-sigv4-0.0.3.tgz#a07c62ec0e7f1e93542b2c87a8674d01a1595afa"
+  integrity sha512-2cltZ00fFlchcRZqZa7BKavb+Sq8KLk6jvM6Da2mqY+5NEDWFghrZww36YPha1Zr1XPA7G2Ceh5jBcpKpeHHFQ==
+  dependencies:
+    aws-sdk "^2.3.19"
+
 asn1@~0.2.3:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/asn1/-/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
@@ -1634,6 +1641,21 @@ auth0@^2.25.1:
     object.assign "^4.1.0"
     rest-facade "^1.12.0"
     retry "^0.12.0"
+
+aws-sdk@^2.3.19:
+  version "2.691.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.691.0.tgz#92361b63117e94d065dad2f215296f5a19fe0c70"
+  integrity sha512-HV/iANH5PJvexubWr/oDmWMKtV/n1shtrACrLIUa5vTXIT6O7CzUouExNOvOtFMZw8zJkLmyEpa/0bDpMmo0Zg==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
 
 aws-sdk@^2.4.0:
   version "2.653.0"
@@ -1951,6 +1973,15 @@ buffer@4.9.1:
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
   integrity sha1-bRu2AbB6TvztlwlBMgkwJ8lbwpg=
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+    isarray "^1.0.0"
+
+buffer@4.9.2:
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.2.tgz#230ead344002988644841ab0244af8c44bbe3ef8"
+  integrity sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"

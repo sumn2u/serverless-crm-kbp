@@ -1,10 +1,9 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import getSettings from "../../config/getSettings";
-import { Item } from "../../common/responses";
 
 let WooCommerce;
 
-function getWooCommerce() {
+export function getWooCommerce() {
   if (!WooCommerce) {
     const { wooCommerce } = getSettings();
     WooCommerce = new WooCommerceRestApi(wooCommerce);

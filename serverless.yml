@@ -26,13 +26,18 @@ provider:
   environment:
     APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
     STAGE: ${self:provider.stage}
-    SECRETS: ${self:custom.secrets}
-
+#    SECRETS: ${self:custom.secrets}
 #  iamRoleStatements:
-#    - Effect: 'Allow'
+#    - Effect: "Allow"
 #      Action:
-#        - 'lambda:InvokeFunction'
-#      Resource: "*"
+#        - "sqs:SendMessage"
+#        - "sqs:GetQueueUrl"
+#      Resource: "arn:aws:sqs:${self:provider.region}:823485753862:NewOrders"
+#    - Effect: "Allow"
+#      Action:
+#        - "sqs:ListQueues"
+#      Resource: "arn:aws:sqs:${self:provider.region}:${AWS::AccountId}:*"
+#      Resource: "arn:aws:sqs:${self:provider.region}:823485753862:*"
 
 functions:
   returnNotValid:
@@ -66,29 +71,29 @@ functions:
           method: post
           private: true
 
-  registerNotificationKey:
-    handler: src/functions/notifications.registerNotificationKey
-    events:
-      - http:
-          path: notifications/registerNotificationKey
-          method: post
-          private: false
+#  registerNotificationKey:
+#    handler: src/functions/notifications.registerNotificationKey
+#    events:
+#      - http:
+#          path: notifications/registerNotificationKey
+#          method: post
+#          private: false
 
-  sendNotifications:
-    handler: src/functions/notifications.sendNotifications
-    events:
-      - http:
-          path: notifications/send
-          method: post
-          private: true
-
-  checkNotificationPushStatus:
-    handler: src/functions/notifications.checkNotificationPushStatus
-    events:
-      - http:
-          path: notifications/send
-          method: post
-          private: true
+#  sendNotifications:
+#    handler: src/functions/notifications.sendNotifications
+#    events:
+#      - http:
+#          path: notifications/send
+#          method: post
+#          private: true
+#
+#  checkNotificationPushStatus:
+#    handler: src/functions/notifications.checkNotificationPushStatus
+#    events:
+#      - http:
+#          path: notifications/send
+#          method: post
+#          private: true
 
   createOrder:
     handler: src/functions/orders.create
@@ -98,11 +103,19 @@ functions:
           method: post
           private: true
 
+  createOrderAsync:
+    handler: src/functions/orders.createAsync
+    events:
+      - http:
+          path: crm/orders/createAsync
+          method: post
+          private: true
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-jest-plugin
-  - serverless-domain-manager
+#  - serverless-domain-manager
   - '@serverless/enterprise-plugin'
 
 custom:
@@ -112,3 +125,13 @@ custom:
     collectCoverage: true
   serverless-offline:
     useChildProcesses: true
+  domain:
+    dev: api.kb-pure.co.il
+    prod: api.kb-pure.co.il
+
+resources:
+  Resources:
+    NewOrders:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "NewOrders"

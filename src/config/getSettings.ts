@@ -41,6 +41,7 @@ export async function initSettings(env = "dev") {
   });
 
   console.log('*** config', config);
+  // console.log('*** process.env.ENV_VARIABLE', process.env);
   // console.log('*** secrets', secrets);
   settings = config;
   configInitialized = true;

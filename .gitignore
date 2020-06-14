@@ -109,3 +109,4 @@ env.ts
 .idea/*.*
 .idea/serverless-crm-kbp.iml
 .build
+stress/**.**
