@@ -71,16 +71,16 @@ functions:
           method: post
           private: true
 
-#  registerNotificationKey:
-#    handler: src/functions/notifications.registerNotificationKey
-#    events:
-#      - http:
-#          path: notifications/registerNotificationKey
-#          method: post
-#          private: false
+  registerNotificationKey:
+    handler: src/functions/notifications/index.registerNotificationKey
+    events:
+      - http:
+          path: notifications/registerNotificationKey
+          method: post
+          private: false
 
 #  sendNotifications:
-#    handler: src/functions/notifications.sendNotifications
+#    handler: src/functions/notifications/index.sendNotifications
 #    events:
 #      - http:
 #          path: notifications/send

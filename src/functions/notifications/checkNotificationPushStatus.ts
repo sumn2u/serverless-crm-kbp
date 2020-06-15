@@ -15,5 +15,5 @@ export async function checkNotificationPushStatus(event) {
   let { message_template } = JSON.parse(event.body);
   if (!message_template || !message_template.title || !message_template.body)
     return internalErrorResponse("Missing message_template on body");
-  return validResponse({ message_template, msgTickets: response });
+  // return validResponse({ message_template, msgTickets: response });
 }
