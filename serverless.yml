@@ -26,18 +26,6 @@ provider:
   environment:
     APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
     STAGE: ${self:provider.stage}
-#    SECRETS: ${self:custom.secrets}
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "sqs:SendMessage"
-#        - "sqs:GetQueueUrl"
-#      Resource: "arn:aws:sqs:${self:provider.region}:823485753862:NewOrders"
-#    - Effect: "Allow"
-#      Action:
-#        - "sqs:ListQueues"
-#      Resource: "arn:aws:sqs:${self:provider.region}:${AWS::AccountId}:*"
-#      Resource: "arn:aws:sqs:${self:provider.region}:823485753862:*"
 
 functions:
   returnNotValid:
@@ -134,4 +122,4 @@ resources:
     NewOrders:
       Type: "AWS::SQS::Queue"
       Properties:
-        QueueName: "NewOrders"
+        QueueName: NewOrders_${self:provider.stage}
