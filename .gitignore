@@ -106,5 +106,7 @@ dist
 config.*.json
 env.js
 env.ts
-.idea/**
+.idea/*.*
+.idea/serverless-crm-kbp.iml
 .build
+stress/**.**

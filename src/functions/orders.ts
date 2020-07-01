@@ -6,7 +6,7 @@ import {
 } from "../common/responses";
 import { getOrderById, IWpItem, IWpOrder } from "../apis/wordpress/getOrder";
 import * as auth0 from "../apis/auth0/management";
-import {initSettings} from "../config/getSettings";
+import { initSettings } from "../config/getSettings";
 
 async function fetchOrderData(orderId) {
   // console.log("*** body.order_id", body.order_id);
@@ -52,13 +52,23 @@ async function pushToCrm({ items, crmId }) {
 
 export async function create(event) {
   await initSettings();
-  let body = JSON.parse(event.body);
+
+  let body;
+  try {
+    body = JSON.parse(event.body);
+  } catch (e) {
+    const clean = event.body.split('\\').join('');
+    console.log('*** clean', clean);
+    body = JSON.parse(clean);
+  }
+
   if (!body.order_id) return internalErrorResponse("Missing order_id on body");
 
   try {
-    const {crmId, items} = await fetchOrderData(body.order_id);
+    console.log("Order Id:", body.order_id);
+    const { crmId, items } = await fetchOrderData(body.order_id);
 
-    const crmOrder = await pushToCrm({crmId, items});
+    const crmOrder = await pushToCrm({ crmId, items });
 
     return validResponse(crmOrder);
   } catch (e) {

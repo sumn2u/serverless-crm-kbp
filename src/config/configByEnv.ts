@@ -1,7 +1,5 @@
 const shared = {
   priority: {
-    priorityApiBase:
-      "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",
     Authorization: "SECRET",
   },
   wooCommerce: {
@@ -20,13 +18,27 @@ const shared = {
   },
 };
 
-const configByEnv: { dev: any; staging: any; prod: any } = {
-  dev: { ...shared },
-  staging: {
+const configByEnv: { dev: any; qa: any; prod: any } = {
+  dev: {
     ...shared,
+    priority: {
+      ...shared.priority,
+      priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",
+    },
+  },
+  qa: {
+    ...shared,
+    priority: {
+      ...shared.priority,
+      priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/kbpure",
+    },
   },
   prod: {
     ...shared,
+    priority: {
+      ...shared.priority,
+      priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/kbpure",
+    },
   },
 };
 

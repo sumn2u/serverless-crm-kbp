@@ -25,32 +25,31 @@ export interface iSettings {
 }
 
 let configInitialized = false;
-let settings = {};
+let settings: iSettings;
+
+function getByStage() {
+  const stage = process.env.STAGE || 'dev';
+  console.log('*** stage', stage);
+  return SettingsByEnv[stage] || SettingsByEnv.dev;
+}
 
 export async function initSettings(env = "dev") {
   const secrets: object = await getSecrets();
-  const config: iSettings = { ...SettingsByEnv.dev };
+  const config: iSettings = { ...getByStage() };
   mapKeys(secrets, (value, key) => {
     set(config, key, value);
   });
 
   console.log('*** config', config);
-  console.log('*** secrets', secrets);
+  // console.log('*** process.env.ENV_VARIABLE', process.env);
+  // console.log('*** secrets', secrets);
   settings = config;
   configInitialized = true;
 }
 
-const getSettings = (env = "dev"): iSettings => {
+const getSettings = (): iSettings => {
   if (!settings) throw Error('wait for initSettings');
-
-  if (env === "dev") {
-    return SettingsByEnv.dev;
-  } else if (env === "staging") {
-    return SettingsByEnv.staging;
-  } else if (env === "prod") {
-    return SettingsByEnv.prod;
-  }
-  return SettingsByEnv.dev;
+  return settings;
 };
 
 export default getSettings;

@@ -26,7 +26,7 @@ export async function create(order: IOrder): Promise<any> {
   return baseApi().post(path, data)
     .then(response => {
       // console.log('*** response', response);
-      console.log('*** response.data', response.data);
+      // console.log('*** response.data', response.data);
       return response.data;
     })
     .catch(error => {

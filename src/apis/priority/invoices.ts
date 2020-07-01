@@ -16,7 +16,7 @@ export function findByCutomerId(id: string) : Promise<[Invoice]> {
   const path =
     `/AINVOICES?$filter=CUSTNAME eq '<%= id %>'&$select=${invoiceListFields}`;
   const url = template(path)({ id });
-  // console.log("*** url", url);
+  console.log("*** url", url);
   return baseApi().get(url)
     .then((response) => response.data.value);
 }
@@ -36,6 +36,8 @@ export async function findExtendedByInvoiceId(
   const path =
     "/AINVOICES(IVNUM='<%= IVNUM %>',DEBIT='<%= DEBIT %>',IVTYPE='<%= IVTYPE %>')/AINVOICEITEMS_SUBFORM?$select=BARCODE,QUANT,PDES,PARTNAME,PRICE";
   const url = template(path)({ ...invoice });
+
+  // console.log('*** url', url);
 
   return baseApi()
     .get(url)

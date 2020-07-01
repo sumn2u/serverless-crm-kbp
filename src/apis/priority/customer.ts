@@ -13,9 +13,8 @@ export async function findByPhone(phone: string, nationalId?: string) {
   const formattedPhoneNumber = adaptPhoneNum(phone);
 
   const path = nationalId ? phoneNationalIdPath : phonePath;
-  // console.log("*** path", path);
   const url = template(path)({ phone: formattedPhoneNumber, nationalId });
-  // console.log("*** url", url);
+  console.log("*** url", url);
 
   try {
     const response = await baseApi().get(url);
@@ -27,6 +26,7 @@ export async function findByPhone(phone: string, nationalId?: string) {
 
     return customers;
   } catch (e) {
-    console.error(e);
+    console.error('Error priority get customer', e);
+    throw e;
   }
 }

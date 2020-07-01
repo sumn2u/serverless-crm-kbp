@@ -16,7 +16,10 @@ async function getPurchaseData(id) {
   const invoicesList = await invoices.findByCutomerId(id);
   // console.log("*** invoicesList", invoicesList);
 
-  const top10 = await getTop10(invoicesList).catch((e) => []);
+  const top10 = await getTop10(invoicesList).catch((e) => {
+    console.error('failed to get top 10', e);
+    return [];
+  });
 
   const latestInvoice = _.first(invoicesList);
   if (!latestInvoice)
@@ -43,6 +46,8 @@ async function getMoreData(id: String) {
 
   return data;
 }
+
+
 
 export async function validatePhoneNumberExists(data) {
   const nationalId = data.nationalId;
@@ -81,6 +86,11 @@ export async function validatePhoneNumberExists(data) {
 }
 
 export async function existByPhone(event) {
+  if (event.source === 'serverless-plugin-warmup') {
+    console.log('WarmUp - Lambda is warm!');
+    return validResponse({});
+  }
+
   await initSettings();
   let body = JSON.parse(event.body);
   if (!body.phoneNumber) return internalErrorResponse("No phoneNumber");
