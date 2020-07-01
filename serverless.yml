@@ -79,13 +79,13 @@ functions:
           method: post
           private: false
 
-#  sendNotifications:
-#    handler: src/functions/notifications/index.sendNotifications
-#    events:
-#      - http:
-#          path: notifications/send
-#          method: post
-#          private: true
+  sendNotifications:
+    handler: src/functions/notifications/index.sendNotifications
+    events:
+      - http:
+          path: notifications/send
+          method: post
+          private: true
 #
 #  checkNotificationPushStatus:
 #    handler: src/functions/notifications.checkNotificationPushStatus
