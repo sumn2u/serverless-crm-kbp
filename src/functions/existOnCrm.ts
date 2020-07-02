@@ -58,9 +58,11 @@ export async function validatePhoneNumberExists(data) {
   const count = result.length;
 
   if (count > 1) {
-    console.warn("more then 1 option for " + phoneNumber);
+    console.error("more then 1 option for " + phoneNumber);
   }
   if (count == 0) {
+    console.error('customer not found')
+    console.log(`phone: ${data.phoneNumber}`)
     return noSuchCustomerResponse;
   }
 
@@ -96,7 +98,7 @@ export async function existByPhone(event) {
   if (!body.phoneNumber) return internalErrorResponse("No phoneNumber");
 
   return validatePhoneNumberExists(body).catch((error) => {
-    console.log("error: ****", error);
+    console.error("error fetching customer ****", error);
     return internalErrorResponse(error.message);
   });
 }
