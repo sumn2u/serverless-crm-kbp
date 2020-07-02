@@ -31,5 +31,6 @@ export async function create(order: IOrder): Promise<any> {
     })
     .catch(error => {
       console.log(error, 'error on create order in priority crm', data);
+      throw error;
     })
 }
