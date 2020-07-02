@@ -20,7 +20,7 @@ export async function findByPhone(phone: string, nationalId?: string) {
     const response = await baseApi().get(url);
     // console.log('*** response', response);
     const possibleCustomers = response.data.value;
-    // console.log('*** possibleCustomers', possibleCustomers);
+    console.log('*** possibleCustomers', possibleCustomers);
 
     const customers = filter(possibleCustomers, (cus) => cus.STATDES == "פעיל");
 
