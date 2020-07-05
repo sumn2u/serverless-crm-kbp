@@ -44,7 +44,8 @@ functions:
 
   existByPhone:
     handler: src/functions/existOnCrm.existByPhone
-    #    warmup: true
+    warmup:
+      enabled: prod
     events:
       - http:
           path: crm/existByPhone
@@ -103,7 +104,8 @@ plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-jest-plugin
-#  - serverless-domain-manager
+  - serverless-plugin-warmup
+  #  - serverless-domain-manager
   - '@serverless/enterprise-plugin'
 
 custom:
