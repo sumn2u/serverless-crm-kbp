@@ -24,8 +24,8 @@ describe("auth0 - management", function () {
       },
     };
 
-    const userId = "sms|5e8485a676c8536728a29151";
-
+    const customer = await searchByPhoneNumber("972534321460");
+    const userId = customer[0].user_id;
     const response = await updateMetadata(userId, usermetadata);
 
     console.log("*** response", response);
