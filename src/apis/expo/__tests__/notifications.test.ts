@@ -6,7 +6,7 @@ describe("expo", function () {
     await initSettings();
   });
 
-  test("send push msg", async () => {
+  test.skip("send push msg", async () => {
     const data = {
       title: "test title",
       body: "test body",

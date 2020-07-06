@@ -3,7 +3,7 @@ import { initSettings } from "../../../config/getSettings";
 
 jest.setTimeout(10000); // 1 second
 
-const testOrder = 696;
+const testOrder = 986;
 describe("Wordpress API", function () {
   beforeAll(async () => {
     await initSettings();

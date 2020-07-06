@@ -2,6 +2,7 @@
   "scripts": {
     "invoke-local": "sls invoke local --function",
     "jest": "jest",
+    "test": "jest",
     "test-local": "yarn invoke-local && jest",
     "offline": "sls offline",
     "deploy-function": "sls deploy function --function",
