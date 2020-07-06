@@ -105,8 +105,6 @@ plugins:
   - serverless-offline
   - serverless-jest-plugin
   - serverless-plugin-warmup
-  #  - serverless-domain-manager
-  - '@serverless/enterprise-plugin'
 
 custom:
   #secrets: '${ssm:/aws/reference/secretsmanager/serverless-crm-kbp~true}'
