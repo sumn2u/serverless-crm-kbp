@@ -113,9 +113,8 @@ custom:
     collectCoverage: true
   serverless-offline:
     useChildProcesses: true
-  domain:
-    dev: api.kb-pure.co.il
-    prod: api.kb-pure.co.il
+  enterprise:
+    logIngestMode: pull
 
 resources:
   Resources:
