@@ -16,6 +16,11 @@ const shared = {
     clientSecret: "SECRET",
     scope: "read:users update:users",
   },
+  botsify: {
+    sendMessageUrl: 'https://botsify.com/api/v1/send-message-to-user/json',
+    apiKey: "SECRET",
+    guideHelperFBID: "SECRET"
+  }
 };
 
 const configByEnv: { dev: any; qa: any; prod: any } = {
@@ -25,6 +30,11 @@ const configByEnv: { dev: any; qa: any; prod: any } = {
       ...shared.priority,
       priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/demo",
     },
+    wooCommerce: {
+      ...shared.wooCommerce,
+      url: 'https://kb-pure.eagleray.co/',
+      orderIdForTest: 662,
+    }
   },
   qa: {
     ...shared,
@@ -39,6 +49,11 @@ const configByEnv: { dev: any; qa: any; prod: any } = {
       ...shared.priority,
       priorityApiBase: "https://kbpure.macomp.co.il/odata/priority/tabula.ini/kbpure",
     },
+    wooCommerce: {
+      ...shared.wooCommerce,
+      url: 'https://secure.kb-pure.co.il/',
+      orderIdForTest: "dont run tests on production",
+    }
   },
 };
 

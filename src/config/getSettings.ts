@@ -15,12 +15,18 @@ export interface iSettings {
     consumerSecret: string;
     version: string;
     queryStringAuth: boolean;
+    orderIdForTest: string;
   };
   auth0: {
     domain: string;
     clientId: string;
     clientSecret: string;
     scope: string;
+  };
+  botsify: {
+    sendMessageUrl: string;
+    apiKey: string;
+    guideHelperFBID: string;
   };
 }
 

@@ -16,6 +16,19 @@ export async function searchByPhoneNumber(phone) {
   return auth0.getUsers(params);
 }
 
+export async function searchBySID(sid) {
+  const { auth0: settings } = getSettings();
+  const auth0 = new ManagementClient({ ...settings });
+
+  var params = {
+    search_engine: "v3",
+    q: `user_metadata.sid:"${sid}"`,
+  };
+
+  console.log("*** auth0 user params", params);
+  return auth0.getUsers(params);
+}
+
 export async function updateMetadata(userId: string, usermetadata: {}) {
   const { auth0: settings } = getSettings();
   const auth0 = new ManagementClient({ ...settings });
