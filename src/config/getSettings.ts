@@ -15,6 +15,7 @@ export interface iSettings {
     consumerSecret: string;
     version: string;
     queryStringAuth: boolean;
+    orderIdForTest: string;
   };
   auth0: {
     domain: string;
