@@ -22,6 +22,11 @@ export interface iSettings {
     clientSecret: string;
     scope: string;
   };
+  botsify: {
+    sendMessageUrl: string;
+    apiKey: string;
+    guideHelperFBID: string;
+  };
 }
 
 let configInitialized = false;

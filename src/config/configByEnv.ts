@@ -16,6 +16,11 @@ const shared = {
     clientSecret: "SECRET",
     scope: "read:users update:users",
   },
+  botsify: {
+    sendMessageUrl: 'https://botsify.com/api/v1/send-message-to-user/json',
+    apiKey: "SECRET",
+    guideHelperFBID: "SECRET"
+  }
 };
 
 const configByEnv: { dev: any; qa: any; prod: any } = {
