@@ -26,7 +26,7 @@ export async function updateImage(sku, id) {
     ],
   };
   return woo.put(`products/${id}`, data).catch((error) => {
-    console.log("*** error on " + sku);
+    console.error("*** error on " + sku);
     console.log(error);
 
     return null;

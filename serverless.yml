@@ -21,7 +21,7 @@ provider:
   apiKeys:
     - access_crm_query_key_${self:provider.stage}
   runtime: nodejs12.x
-  timeout: 10
+  timeout: 20
   stage: ${opt:stage, self:custom.default_stage}
   environment:
     APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}
@@ -77,7 +77,7 @@ functions:
           private: true
 #
 #  checkNotificationPushStatus:
-#    handler: src/functions/notifications.checkNotificationPushStatus
+#    handler: src/functions/notifications/index.checkNotificationPushStatus
 #    events:
 #      - http:
 #          path: notifications/send
@@ -100,24 +100,29 @@ functions:
           method: post
           private: true
 
+
+  onCustomerMessage:
+    handler: src/functions/bot/guideHelper.onCustomerMessage
+    events:
+      - http:
+          path: bot/guideHelper/onCustomerMessage
+          method: post
+          private: true
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-jest-plugin
   - serverless-plugin-warmup
-  #  - serverless-domain-manager
-  - '@serverless/enterprise-plugin'
 
 custom:
-  #secrets: '${ssm:/aws/reference/secretsmanager/serverless-crm-kbp~true}'
   default_stage: dev
   jest:
     collectCoverage: true
   serverless-offline:
     useChildProcesses: true
-  domain:
-    dev: api.kb-pure.co.il
-    prod: api.kb-pure.co.il
+  enterprise:
+    logIngestMode: pull
 
 resources:
   Resources:

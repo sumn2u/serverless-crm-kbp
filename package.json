@@ -20,6 +20,7 @@
     "expo-server-sdk": "^3.5.0",
     "facebook-chat-api": "^1.7.0",
     "lodash": "^4.17.15",
+    "moment": "^2.27.0",
     "node-fetch": "^2.6.0",
     "source-map-support": "^0.5.16"
   },
