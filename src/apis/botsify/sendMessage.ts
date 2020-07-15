@@ -8,17 +8,18 @@ export function sendMessage(recipientId, message) {
   } = getSettings();
 
   const body = {
-    apiKey,
+    apikey: apiKey,
     tag: "CONFIRMED_EVENT_UPDATE",
     to: recipientId || guideHelperFBID,
     message,
   };
 
-  console.log('*** sendMessageUrl', sendMessageUrl);
-  console.log('*** body', body);
+  const headers = {
+    "Content-Type": "application/json",
+  };
 
   return axios
-    .post(sendMessageUrl, JSON.stringify(body))
+    .post(sendMessageUrl, JSON.stringify(body), { headers })
     .then((response) => {
       // console.log('*** response', response);
       // console.log('*** response.data', response.data);
