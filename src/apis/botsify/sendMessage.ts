@@ -27,6 +27,6 @@ export function sendMessage(recipientId, message) {
     })
     .catch((error) => {
       console.error(error, "error on send message with botsify", message);
-      // throw error;
+      throw error;
     });
 }
