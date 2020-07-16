@@ -1,5 +1,5 @@
 import * as moment from 'moment';
 
-export function happenedBefore(momentDate, minutesAgo) {
-  return momentDate.add(minutesAgo, 'minutes').calendar()  < moment().calendar();
+export function happenedBeforeMoreThen(momentDate, minutesAgo) {
+  return momentDate.add(minutesAgo, 'minutes')  < moment();
 }

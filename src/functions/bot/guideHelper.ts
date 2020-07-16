@@ -1,7 +1,7 @@
 import * as moment from "moment";
 
 import { internalErrorResponse, validResponse } from "../../common/responses";
-import { happenedBefore } from "../utils/dates";
+import { happenedBeforeMoreThen } from "../utils/dates";
 import * as auth0 from "../../apis/auth0/management";
 import { parseEvent } from "../utils/parseEvent";
 import { sendMessage } from "../../apis/botsify/sendMessage";
@@ -48,11 +48,14 @@ function buildHelperMessage(user, fbName) {
 
 export async function onCustomerMessage(event) {
   const body = await parseEvent(event, [
-    "last_user_msg_time",
-    "fbId",
-    "user_name",
+    "{last_user_msg_time}",
+    "{fbId}",
+    "{user_name}",
   ]);
-  const { last_user_msg_time, fbId, user_name } = body;
+
+  const fbId = body["{fbId}"];
+  const last_user_msg_time = body["{last_user_msg_time}"];
+  const user_name = body["{user_name}"];
 
   const lastUserMessageTime = moment(
     last_user_msg_time.toString(),
@@ -61,7 +64,7 @@ export async function onCustomerMessage(event) {
 
   if (!lastUserMessageTime)
     return internalErrorResponse("Missing last_user_msg_time");
-  if (!happenedBefore(lastUserMessageTime, minutesSpan)) {
+  if (!happenedBeforeMoreThen(lastUserMessageTime, minutesSpan)) {
     const message = `No guide update - last update was less then ${minutesSpan} minutes`;
     console.log(message);
     return validResponse({ message });
@@ -81,7 +84,8 @@ export async function onCustomerMessage(event) {
 
   const user = relevantUsers[0];
   console.log("*** user", user);
-  const message = buildHelperMessage(user, body.user_name);
+  const message = buildHelperMessage(user, user_name);
   await sendMessage(null, { text: message });
+  console.log("messge sent:", message);
   return validResponse({ message });
 }
