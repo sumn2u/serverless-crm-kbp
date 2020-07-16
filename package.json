@@ -35,7 +35,6 @@
     "serverless-jest-plugin": "^0.3.0",
     "serverless-offline": "^6.1.5",
     "serverless-plugin-typescript": "^1.1.9",
-    "serverless-plugin-warmup": "^4.9.0",
     "ts-jest": "^24.3.0",
     "typescript": "^3.7.5"
   }
