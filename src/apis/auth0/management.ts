@@ -34,6 +34,7 @@ export async function updateMetadata(userId: string, usermetadata: {}) {
   const auth0 = new ManagementClient({ ...settings });
 
   const params = { id: userId };
+  console.log(`update user ${userId} with:`, usermetadata);
   return auth0.updateUserMetadata(params, usermetadata);
 }
 
