@@ -1,15 +1,13 @@
 import * as moment from "moment";
 import * as _ from "lodash";
 
-import { internalErrorResponse, validResponse } from "../../common/responses";
-import { happenedBeforeMoreThen } from "../utils/dates";
+import {  validResponse } from "../../common/responses";
 import * as auth0 from "../../apis/auth0/management";
 import { parseEvent } from "../utils/parseEvent";
 import { sendMessage } from "../../apis/botsify/sendMessage";
 import { updateMetadata } from "../../apis/auth0/management";
 import {buildHelperMessage} from "./buildHelperMessage";
 
-const dateTimeFormat = "YYYY-MM-DD hh:mm:ss";
 const minutesSpan = -10;
 
 export async function onCustomerMessage(event) {
