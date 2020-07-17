@@ -43,9 +43,8 @@ functions:
           method: post
 
   existByPhone:
+    provisionedConcurrency: 1
     handler: src/functions/existOnCrm.existByPhone
-    warmup:
-      enabled: prod
     events:
       - http:
           path: crm/existByPhone
@@ -85,6 +84,7 @@ functions:
 #          private: true
 
   createOrder:
+    provisionedConcurrency: 1
     handler: src/functions/orders.create
     events:
       - http:
@@ -102,6 +102,7 @@ functions:
 
 
   onCustomerMessage:
+    provisionedConcurrency: 1
     handler: src/functions/bot/guideHelper.onCustomerMessage
     events:
       - http:
@@ -113,7 +114,6 @@ plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-jest-plugin
-  - serverless-plugin-warmup
 
 custom:
   default_stage: dev

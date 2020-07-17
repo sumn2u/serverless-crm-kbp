@@ -9,6 +9,8 @@ export async function parseEvent(event, dependentKeys) {
   await initSettings();
 
   let body;
+  console.log('*** event.body', event.body);
+
   try {
     body = JSON.parse(event.body);
   } catch (e) {
@@ -16,7 +18,12 @@ export async function parseEvent(event, dependentKeys) {
   }
 
   dependentKeys.forEach(key => {
-    if (!body[key]) throw internalErrorResponse(`missing ${key} in event body`);
+    if (!body[key]) {
+      const messege = `missing ${key} in event body`;
+      console.error(messege);
+      console.log('body:', event.body);
+      throw internalErrorResponse(messege);
+    }
   })
 
   return body;

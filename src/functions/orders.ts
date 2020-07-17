@@ -20,6 +20,11 @@ async function fetchOrderData(orderId) {
 
   // console.log("*** wpUserName", wpUserName);
 
+  if (!Number.isInteger(wpUserName)) {
+    console.log("not priority user");
+    return null;
+  }
+
   const auth0User = await auth0.searchByPhoneNumber(wpUserName);
   const {
     user_metadata: { crmId },
@@ -57,8 +62,8 @@ export async function create(event) {
   try {
     body = JSON.parse(event.body);
   } catch (e) {
-    const clean = event.body.split('\\').join('');
-    console.log('*** clean', clean);
+    const clean = event.body.split("\\").join("");
+    console.log("*** clean", clean);
     body = JSON.parse(clean);
   }
 
@@ -66,13 +71,17 @@ export async function create(event) {
 
   try {
     console.log("Order Id:", body.order_id);
-    const { crmId, items } = await fetchOrderData(body.order_id);
+    const orderData = await fetchOrderData(body.order_id);
+    if (!orderData) return validResponse({ message: "invalid user for order" });
 
-    const crmOrder = await pushToCrm({ crmId, items });
+    const crmOrder = await pushToCrm({
+      crmId: orderData.crmId,
+      items: orderData.items,
+    });
 
     return validResponse(crmOrder);
   } catch (e) {
-    console.error('Error on creating order', e);
+    console.error("Error on creating order", e);
     return internalErrorResponse(e);
   }
 }
