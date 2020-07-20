@@ -1,20 +1,17 @@
 import * as moment from "moment";
 import * as _ from "lodash";
 
-import {  validResponse } from "../../common/responses";
+import { validResponse } from "../../common/responses";
 import * as auth0 from "../../apis/auth0/management";
 import { parseEvent } from "../utils/parseEvent";
 import { sendMessage } from "../../apis/botsify/sendMessage";
 import { updateMetadata } from "../../apis/auth0/management";
-import {buildHelperMessage} from "./buildHelperMessage";
+import { buildHelperMessage } from "./buildHelperMessage";
 
 const minutesSpan = -10;
 
 export async function onCustomerMessage(event) {
-  const body = await parseEvent(event, [
-    "{fbId}",
-    "{user_name}",
-  ]);
+  const body = await parseEvent(event, ["{fbId}", "{user_name}"]);
 
   const fbId = body["{fbId}"];
   const user_name = body["{user_name}"];
@@ -36,15 +33,20 @@ export async function onCustomerMessage(event) {
     "user_metadata.lastGuideHelpMessage"
   );
   console.log("*** lastGuideHelpMessage", lastGuideHelpMessage);
-  const minutesSinceLastGuideMessage = moment(lastGuideHelpMessage).diff(
-    moment(),
-    "minutes"
-  );
-  console.log("*** minutesSinceLastGuideMessage", minutesSinceLastGuideMessage);
-  if (minutesSinceLastGuideMessage > minutesSpan) {
-    const message = `No guide update - last update was less then ${minutesSpan} minutes`;
-    console.log(message);
-    return validResponse({ message });
+  if (lastGuideHelpMessage) {
+    const minutesSinceLastGuideMessage = moment(lastGuideHelpMessage).diff(
+      moment(),
+      "minutes"
+    );
+    console.log(
+      "*** minutesSinceLastGuideMessage",
+      minutesSinceLastGuideMessage
+    );
+    if (minutesSinceLastGuideMessage > minutesSpan) {
+      const message = `No guide update - last update was less then ${minutesSpan} minutes`;
+      console.log(message);
+      return validResponse({ message });
+    }
   }
 
   const message = buildHelperMessage(user, user_name);
