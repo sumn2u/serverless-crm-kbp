@@ -44,7 +44,7 @@ export async function getOrderById(orderId: string): Promise<IWpOrder> {
   return getWooCommerce()
     .get(`orders/${orderId}`)
     .then(async (response) => {
-      console.log("*** response.data", response.data);
+      // console.log("*** response.data", response.data);
       const { id, line_items, customer_id } = response.data;
       const customer = await getCustomerById(customer_id);
 
