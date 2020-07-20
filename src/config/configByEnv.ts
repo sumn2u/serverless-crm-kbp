@@ -33,7 +33,7 @@ const configByEnv: { dev: any; qa: any; prod: any } = {
     wooCommerce: {
       ...shared.wooCommerce,
       url: 'https://kb-pure.eagleray.co/',
-      orderIdForTest: 662,
+      orderIdForTest: 995,
     }
   },
   qa: {
