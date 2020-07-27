@@ -17,6 +17,7 @@
     "auth0": "^2.25.1",
     "aws-sdk": "^2.674.0",
     "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
     "expo-server-sdk": "^3.5.0",
     "facebook-chat-api": "^1.7.0",
     "lodash": "^4.17.15",
