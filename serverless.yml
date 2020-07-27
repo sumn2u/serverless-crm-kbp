@@ -21,7 +21,7 @@ provider:
   apiKeys:
     - access_crm_query_key_${self:provider.stage}
   runtime: nodejs12.x
-  timeout: 20
+  timeout: 40
   stage: ${opt:stage, self:custom.default_stage}
   environment:
     APIG_DEPLOYMENT_ID: ApiGatewayDeployment${sls:instanceId}

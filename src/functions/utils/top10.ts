@@ -3,7 +3,7 @@ import { Promise } from "bluebird";
 
 import * as invoicesApi from "../../apis/priority/invoices";
 
-const concurrency = 5;
+const concurrency = 10;
 
 export async function reduceItemsFromInvoices(invoicesList) {
   const itemsCounter = {
